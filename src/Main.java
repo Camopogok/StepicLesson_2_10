@@ -1,4 +1,5 @@
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Scanner;
 
 public class Main {
@@ -7,9 +8,15 @@ public class Main {
         FileReader fr = new FileReader("input.txt");
         Scanner input = new Scanner(fr);
         String s = input.nextLine();
+        fr.close();
+
+        FileWriter fw = new FileWriter("Output.txt");
+
         System.out.println(s);
         try {
-            calc.printResult(s);
+            System.out.println(calc.printResult(s));
+            fw.write("" + calc.printResult(s));
+            fw.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -40,31 +47,33 @@ class Calc {
         }
     }
 
-    void printResult (String s) throws Exception {
+    Double printResult (String s) throws Exception {
         try {
             inputData(s);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return;
+            error = true;
         }
+        Double result = null;
         if (!error) {
             switch (action) {
                 case "+":
-                    System.out.println(a + b);
+                    result = a + b;
                     break;
                 case "-":
-                    System.out.println(a - b);
+                    result = a - b;
                     break;
                 case "*":
-                    System.out.println(a * b);
+                    result = a * b;
                     break;
                 case "/":
                     if (b != 0)
-                        System.out.println(a / b);
+                        result = a / b;
                     else
                         throw new Exception("Error! Division by zero");
                     break;
             }
         }
+        return result;
     }
 }
